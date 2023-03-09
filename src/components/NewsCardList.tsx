@@ -1,7 +1,9 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { restApiService } from "../utils/RestApiService";
 import { NewsItem } from "../utils/types";
 import { NewsCard } from "./NewsCard";
+import styles from "./NewsCardList.module.css"
 
 export function NewsCardList() {
   const [latestNews, setLatestNews] = useState<NewsItem[]>();
@@ -12,6 +14,8 @@ export function NewsCardList() {
 
   return (
     <>
+    <Typography variant="h2" gutterBottom>NEWS WEBSITE</Typography>
+    <div className={styles.container}>
       {latestNews &&
         latestNews.map((news) => (
           <NewsCard
@@ -22,6 +26,6 @@ export function NewsCardList() {
             rating={news.score}
           />
         ))}
-    </>
+    </div></>
   );
 }

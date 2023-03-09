@@ -1,0 +1,19 @@
+.card {
+  width: 600px;
+  min-height: 200px;
+  padding: 10px 20px;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 1px 4px 15px 0px rgba(34, 60, 80, 0.2);
+}
+
+.rating {
+  color: rgb(117, 117, 117);
+}
+
+.date {
+  text-align: end;
+  color: rgb(117, 117, 117);
+}
