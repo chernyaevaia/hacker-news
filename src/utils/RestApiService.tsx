@@ -54,6 +54,15 @@ export class RestApiService {
       .then((requests) => Promise.all(requests))
       .then((responses) => Promise.all(responses));
   };
+
+  getReplies = (ids: number[]): Promise<CommentItem[]> => {
+    const urls = ids
+      .map(
+        (id: number) => `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+      )
+      .map((url: string) => this.fetchApi(url));
+    return Promise.all(urls).then((responses) => Promise.all(responses));
+  };
 }
 
 export const restApiService = new RestApiService();

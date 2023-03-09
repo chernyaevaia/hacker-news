@@ -1,11 +1,14 @@
 import {
   Button,
+  Collapse,
   List,
   ListItemButton,
   ListItemText,
   ListSubheader,
   Typography,
 } from "@mui/material";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { restApiService } from "../utils/RestApiService";
@@ -15,13 +18,20 @@ import styles from "./NewsItemPage.module.css";
 export function NewsItemPage() {
   const [newsItem, setNewsItem] = useState<NewsItem>();
   const [comments, setComments] = useState<CommentItem[]>();
+  const [replies, setReplies] = useState<CommentItem[]>();
+  const [open, setOpen] = useState(false);
 
   const { id } = useParams();
+
+  const handleClick = (ids: number[]) => {
+    !open && restApiService.getReplies(ids).then((data) => setReplies(data))
+    setOpen(!open);
+  };
 
   useEffect(() => {
     id && restApiService.getNewsItem(id).then((data) => setNewsItem(data));
     id && restApiService.getComments(+id).then((data) => setComments(data));
-  });
+  }, []);
 
   return (
     <>
@@ -59,13 +69,25 @@ export function NewsItemPage() {
       />
       {comments &&
         comments.map((comment) => (
-          <ListItemButton sx={{ bgcolor: "background.paper", maxWidth: 600 }}>
+          <>
+          <ListItemButton onClick={() => handleClick(comment.kids)} sx={{ bgcolor: "background.paper", maxWidth: 600 }}>
             <ListItemText
               className={styles.comment}
               sx={{ bgcolor: "background.paper", maxWidth: 600 }}
               primary={comment.text}
             />
+            {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
+          {replies && replies.map(reply => (
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemText primary={reply.text} />
+            </ListItemButton>
+            </List>
+        </Collapse>
+          ))}
+        </>
         ))}
         </div>
     </>
