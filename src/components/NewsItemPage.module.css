@@ -6,6 +6,10 @@
     margin-left: 140px;
 }
 
+.commentWrapper {
+    margin-left: 180px;
+}
+
 .btn {
     margin: 30px;
 }
@@ -13,4 +17,8 @@
 h2 {
     font-size: 48px;
     margin: 0
+}
+
+.comment {
+    text-align: justify;
 }

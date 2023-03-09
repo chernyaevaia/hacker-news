@@ -1,4 +1,4 @@
-import { NewsItem } from "./types";
+import { CommentItem, NewsItem } from "./types";
 
 export class RestApiService {
   fetchApi<T>(url: string, method: string = "GET", headers?: Object) {
@@ -36,6 +36,23 @@ export class RestApiService {
     )
       .then((res) => res)
       .catch((e) => console.log(e));
+  };
+
+  getComments = (id: number): Promise<CommentItem[]> => {
+    return this.fetchApi(
+      `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+    )
+      .then((res) => res)
+      .then((newsitem) => newsitem.kids)
+      .then((commentIds) =>
+        commentIds.map(
+          (id: number) =>
+            `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+        )
+      )
+      .then((urls) => urls.map((url: string) => this.fetchApi(url)))
+      .then((requests) => Promise.all(requests))
+      .then((responses) => Promise.all(responses));
   };
 }
 

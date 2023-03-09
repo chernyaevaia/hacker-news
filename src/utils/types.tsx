@@ -8,3 +8,12 @@ export interface NewsItem {
     url: string,
     kids: number[]
 }
+
+export interface CommentItem {
+    id: number,
+    text: string,
+    by: string,
+    time: string,
+    parent: number,
+    kids: number[]
+}
