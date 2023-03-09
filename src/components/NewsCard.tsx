@@ -22,9 +22,6 @@ export function NewsCard(news: NewsCardProps) {
       <Typography className={styles.rating} variant="body2" gutterBottom>
         {news.rating} points
       </Typography>
-      <Button variant="contained" size="medium">
-        Learn More
-      </Button>
     </Card>
   );
 }
