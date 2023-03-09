@@ -1,9 +1,16 @@
 .container {
-  width: 1400px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   row-gap: 30px;
   column-gap: 20px;
+}
+
+.topContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 50px 0;
 }
