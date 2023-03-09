@@ -1,5 +1,4 @@
-import React from "react";
-import { Button, Card, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 import styles from "./NewsCard.module.css";
 
 export interface NewsCardProps {

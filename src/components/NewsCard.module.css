@@ -17,3 +17,7 @@
   text-align: end;
   color: rgb(117, 117, 117);
 }
+
+a {
+  text-decoration: none;
+}

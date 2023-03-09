@@ -17,7 +17,7 @@ export class RestApiService {
     });
   }
 
-  geNewsItems = (): Promise<NewsItem[]> => {
+  getNews = (): Promise<NewsItem[]> => {
     return this.fetchApi(
       `https://hacker-news.firebaseio.com/v0/newstories.json`
     )
@@ -28,6 +28,14 @@ export class RestApiService {
       .then((urls) => urls.map((url) => this.fetchApi(url)))
       .then((requests) => Promise.all(requests))
       .then((responses) => Promise.all(responses));
+  };
+
+  getNewsItem = (id: string): Promise<NewsItem> => {
+    return this.fetchApi(
+      `https://hacker-news.firebaseio.com/v0/item/${id}.json`
+    )
+      .then((res) => res)
+      .catch((e) => console.log(e));
   };
 }
 

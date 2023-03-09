@@ -4,4 +4,7 @@ export interface NewsItem {
     by: string,
     time: string,
     score: string
+    descendants: number,
+    url: string,
+    kids: number[]
 }
