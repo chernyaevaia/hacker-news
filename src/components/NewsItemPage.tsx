@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Collapse,
   List,
   ListItemButton,
@@ -21,7 +22,7 @@ export function NewsItemPage() {
   const [replies, setReplies] = useState<CommentItem[]>();
   const [open, setOpen] = useState(false);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
 
@@ -31,8 +32,15 @@ export function NewsItemPage() {
   };
 
   useEffect(() => {
-    id && restApiService.getNewsItem(id).then((data) => setNewsItem(data));
-    id && restApiService.getComments(+id).then((data) => setComments(data));
+    setIsLoading(true)
+    id && restApiService.getNewsItem(id).then((data) =>  {
+      setNewsItem(data)
+      setIsLoading(false)
+    });
+    id && restApiService.getComments(+id).then((data) => {
+      setComments(data)
+      setIsLoading(false)
+    });
   }, [isRefresh, id]);
 
   return (
@@ -42,8 +50,8 @@ export function NewsItemPage() {
           BACK
         </Button>
       </Link>
-      <div className={styles.wrapper}>
-        <h2 className={styles.heading}>{newsItem?.title}</h2>
+       <div className={styles.wrapper}>
+        {isLoading? <CircularProgress /> : <><h2 className={styles.heading}>{newsItem?.title}</h2>
         <Typography className={styles.date} variant="overline">
           published{" "}
           {newsItem?.time && new Date(+newsItem.time * 1000).toLocaleString()}
@@ -57,7 +65,7 @@ export function NewsItemPage() {
         <Typography sx={{ mt: 2 }} variant="body2">
           {newsItem?.descendants} comments
         </Typography>
-      </div>
+      </>}</div>
       <div className={styles.commentWrapper}>
       <Button
           variant="contained"
@@ -76,7 +84,7 @@ export function NewsItemPage() {
             </ListSubheader>
           }
         />
-        {comments &&
+        {isLoading? <CircularProgress /> : comments &&
           comments.map((comment) => (
             <>
               <ListItemButton

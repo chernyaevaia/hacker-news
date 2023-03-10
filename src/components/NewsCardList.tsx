@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { restApiService } from "../utils/RestApiService";
@@ -9,12 +9,20 @@ import styles from "./NewsCardList.module.css";
 export function NewsCardList() {
   const [latestNews, setLatestNews] = useState<NewsItem[]>();
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    restApiService.getNews().then((data) => setLatestNews(data));
-
+    setIsLoading(true);
+    restApiService.getNews().then((data) => {
+      setLatestNews(data);
+      setIsLoading(false);
+    });
     const interval = setInterval(() => {
-      restApiService.getNews().then((data) => setLatestNews(data));
+      setIsLoading(true);
+      restApiService.getNews().then((data) => {
+        setLatestNews(data);
+        setIsLoading(false);
+      });
     }, 60000);
     return () => clearInterval(interval);
   }, [isRefresh]);
@@ -34,16 +42,18 @@ export function NewsCardList() {
         </Button>
       </div>
       <div className={styles.container}>
-        {latestNews &&
+        
+        {isLoading ? <CircularProgress /> : latestNews &&
           latestNews.map((news) => (
             <Link key={news.id} to={`${news.id}`}>
-            <NewsCard
-              key={news.id}
-              author={news.by}
-              title={news.title}
-              date={news.time}
-              rating={news.score}
-            /></Link>
+              <NewsCard
+                key={news.id}
+                author={news.by}
+                title={news.title}
+                date={news.time}
+                rating={news.score}
+              />
+            </Link>
           ))}
       </div>
     </>
