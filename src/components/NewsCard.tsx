@@ -14,7 +14,9 @@ export function NewsCard(news: NewsCardProps) {
       <Typography className={styles.date} variant="caption" display="block">
         published {new Date(+news.date * 1000).toLocaleString()}
       </Typography>
-      <Typography variant="h6">{news.title.replace(/<\/?[^>]+>/gi, '')}</Typography>
+      <Typography variant="h6">
+        {news.title.replace(/<\/?[^>]+>/gi, "")}
+      </Typography>
       <Typography variant="caption" display="block" gutterBottom>
         by {news.author}
       </Typography>

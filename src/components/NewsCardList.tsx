@@ -9,7 +9,7 @@ import styles from "./NewsCardList.module.css";
 export function NewsCardList() {
   const [latestNews, setLatestNews] = useState<NewsItem[]>();
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,8 +42,10 @@ export function NewsCardList() {
         </Button>
       </div>
       <div className={styles.container}>
-        
-        {isLoading ? <CircularProgress /> : latestNews &&
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          latestNews &&
           latestNews.map((news) => (
             <Link key={news.id} to={`${news.id}`}>
               <NewsCard
@@ -54,7 +56,8 @@ export function NewsCardList() {
                 rating={news.score}
               />
             </Link>
-          ))}
+          ))
+        )}
       </div>
     </>
   );

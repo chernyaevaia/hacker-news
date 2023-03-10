@@ -20,9 +20,9 @@ export function NewsItemPage() {
   const [newsItem, setNewsItem] = useState<NewsItem>();
   const [comments, setComments] = useState<CommentItem[]>();
   const [replies, setReplies] = useState<CommentItem[]>();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { id } = useParams();
 
@@ -101,7 +101,7 @@ export function NewsItemPage() {
             <>
               <ListItemButton
                 onClick={() => handleClick(comment.kids)}
-                sx={{ bgcolor: "background.paper", maxWidth: 640}}
+                sx={{ bgcolor: "background.paper", maxWidth: 640 }}
                 className={styles.rootComment}
               >
                 <ListItemText
@@ -111,7 +111,7 @@ export function NewsItemPage() {
                     width: 450,
                     padding: 2,
                   }}
-                  primary={comment.text.replace(/<\/?[^>]+>/gi, '')}
+                  primary={comment.text.replace(/<\/?[^>]+>/gi, "")}
                 />
                 <ListItemText
                   className={styles.comment}
@@ -141,7 +141,7 @@ export function NewsItemPage() {
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText
                           className={styles.comment}
-                          primary={reply.text.replace(/<\/?[^>]+>/gi, '')}
+                          primary={reply.text.replace(/<\/?[^>]+>/gi, "")}
                           sx={{ pl: 4 }}
                         />
                       </ListItemButton>

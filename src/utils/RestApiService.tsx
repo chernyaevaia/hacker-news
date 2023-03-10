@@ -1,7 +1,7 @@
 import { CommentItem, NewsItem } from "./types";
 
 export class RestApiService {
-  fetchApi<T>(url: string, method: string = "GET", headers?: Object) {
+  fetchApi(url: string, method: string = "GET", headers?: Object) {
     const params = {
       method: method,
       headers: {
