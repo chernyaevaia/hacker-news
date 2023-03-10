@@ -18,10 +18,8 @@ export function NewsCardList() {
       setIsLoading(false);
     });
     const interval = setInterval(() => {
-      setIsLoading(true);
       restApiService.getNews().then((data) => {
         setLatestNews(data);
-        setIsLoading(false);
       });
     }, 60000);
     return () => clearInterval(interval);
