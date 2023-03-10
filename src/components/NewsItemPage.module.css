@@ -4,10 +4,12 @@
     align-items: start;
     padding: 20px 40px;
     margin-left: 140px;
+    margin-bottom: 50px;
 }
 
 .commentWrapper {
     margin-left: 180px;
+    margin-bottom: 100px;
 }
 
 .btn {

@@ -32,15 +32,17 @@ export function NewsItemPage() {
   };
 
   useEffect(() => {
-    setIsLoading(true)
-    id && restApiService.getNewsItem(id).then((data) =>  {
-      setNewsItem(data)
-      setIsLoading(false)
-    });
-    id && restApiService.getComments(+id).then((data) => {
-      setComments(data)
-      setIsLoading(false)
-    });
+    setIsLoading(true);
+    id &&
+      restApiService.getNewsItem(id).then((data) => {
+        setNewsItem(data);
+        setIsLoading(false);
+      });
+    id &&
+      restApiService.getComments(+id).then((data) => {
+        setComments(data);
+        setIsLoading(false);
+      });
   }, [isRefresh, id]);
 
   return (
@@ -50,24 +52,31 @@ export function NewsItemPage() {
           BACK
         </Button>
       </Link>
-       <div className={styles.wrapper}>
-        {isLoading? <CircularProgress /> : <><h2 className={styles.heading}>{newsItem?.title}</h2>
-        <Typography className={styles.date} variant="overline">
-          published{" "}
-          {newsItem?.time && new Date(+newsItem.time * 1000).toLocaleString()}
-        </Typography>
-        <Typography variant="overline" gutterBottom>
-          by {newsItem?.by}
-        </Typography>
-        <Typography className={styles.source} variant="body2" gutterBottom>
-          source:<a href={newsItem?.url}> {newsItem?.url}</a>
-        </Typography>
-        <Typography sx={{ mt: 2 }} variant="body2">
-          {newsItem?.descendants} comments
-        </Typography>
-      </>}</div>
+      <div className={styles.wrapper}>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <h2 className={styles.heading}>{newsItem?.title}</h2>
+            <Typography className={styles.date} variant="overline">
+              published{" "}
+              {newsItem?.time &&
+                new Date(+newsItem.time * 1000).toLocaleString()}
+            </Typography>
+            <Typography variant="overline" gutterBottom>
+              by {newsItem?.by}
+            </Typography>
+            <Typography className={styles.source} variant="body2" gutterBottom>
+              source:<a href={newsItem?.url}> {newsItem?.url}</a>
+            </Typography>
+            <Typography sx={{ mt: 2 }} variant="body2">
+              {newsItem?.descendants} comments
+            </Typography>
+          </>
+        )}
+      </div>
       <div className={styles.commentWrapper}>
-      <Button
+        <Button
           variant="contained"
           size="medium"
           onClick={() => setIsRefresh(!isRefresh)}
@@ -84,17 +93,36 @@ export function NewsItemPage() {
             </ListSubheader>
           }
         />
-        {isLoading? <CircularProgress /> : comments &&
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          comments &&
           comments.map((comment) => (
             <>
               <ListItemButton
                 onClick={() => handleClick(comment.kids)}
-                sx={{ bgcolor: "background.paper", maxWidth: 600 }}
+                sx={{ bgcolor: "background.paper", maxWidth: 640}}
+                className={styles.rootComment}
               >
                 <ListItemText
                   className={styles.comment}
-                  sx={{ bgcolor: "background.paper", maxWidth: 600, padding:2 }}
-                  primary={comment.text}
+                  sx={{
+                    bgcolor: "background.paper",
+                    width: 450,
+                    padding: 2,
+                  }}
+                  primary={comment.text.replace(/<\/?[^>]+>/gi, '')}
+                />
+                <ListItemText
+                  className={styles.comment}
+                  sx={{
+                    bgcolor: "background.paper",
+                    maxWidth: 640,
+                    padding: 4,
+                  }}
+                  primary={
+                    (comment.kids ? comment.kids.length : 0) + " replies"
+                  }
                 />
                 {open ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
@@ -106,22 +134,23 @@ export function NewsItemPage() {
                     unmountOnExit
                   >
                     <List
-                      sx={{ bgcolor: "background.paper", maxWidth: 600 }}
+                      sx={{ bgcolor: "background.paper", maxWidth: 640 }}
                       component="div"
                       disablePadding
                     >
                       <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText
                           className={styles.comment}
-                          primary={reply.text}
-                          sx={{padding:1}}
+                          primary={reply.text.replace(/<\/?[^>]+>/gi, '')}
+                          sx={{ pl: 4 }}
                         />
                       </ListItemButton>
                     </List>
                   </Collapse>
                 ))}
             </>
-          ))}
+          ))
+        )}
       </div>
     </>
   );
