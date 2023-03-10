@@ -7,8 +7,8 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { restApiService } from "../utils/RestApiService";
@@ -20,18 +20,20 @@ export function NewsItemPage() {
   const [comments, setComments] = useState<CommentItem[]>();
   const [replies, setReplies] = useState<CommentItem[]>();
   const [open, setOpen] = useState(false);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
+
 
   const { id } = useParams();
 
   const handleClick = (ids: number[]) => {
-    !open && restApiService.getReplies(ids).then((data) => setReplies(data))
+    !open && restApiService.getReplies(ids).then((data) => setReplies(data));
     setOpen(!open);
   };
 
   useEffect(() => {
     id && restApiService.getNewsItem(id).then((data) => setNewsItem(data));
     id && restApiService.getComments(+id).then((data) => setComments(data));
-  }, []);
+  }, [isRefresh, id]);
 
   return (
     <>
@@ -57,39 +59,62 @@ export function NewsItemPage() {
         </Typography>
       </div>
       <div className={styles.commentWrapper}>
-      <List
-        sx={{ bgcolor: "background.paper", maxWidth: 600 }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader component="div" id="nested-list-subheader">
-            Comments
-          </ListSubheader>
-        }
-      />
-      {comments &&
-        comments.map((comment) => (
-          <>
-          <ListItemButton onClick={() => handleClick(comment.kids)} sx={{ bgcolor: "background.paper", maxWidth: 600 }}>
-            <ListItemText
-              className={styles.comment}
-              sx={{ bgcolor: "background.paper", maxWidth: 600 }}
-              primary={comment.text}
-            />
-            {open ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-          {replies && replies.map(reply => (
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary={reply.text} />
-            </ListItemButton>
-            </List>
-        </Collapse>
+      <Button
+          variant="contained"
+          size="medium"
+          onClick={() => setIsRefresh(!isRefresh)}
+        >
+          UPDATE COMMENTS
+        </Button>
+        <List
+          sx={{ bgcolor: "background.paper", maxWidth: 600 }}
+          component="nav"
+          aria-labelledby="nested-list-subheader"
+          subheader={
+            <ListSubheader component="div" id="nested-list-subheader">
+              Comments
+            </ListSubheader>
+          }
+        />
+        {comments &&
+          comments.map((comment) => (
+            <>
+              <ListItemButton
+                onClick={() => handleClick(comment.kids)}
+                sx={{ bgcolor: "background.paper", maxWidth: 600 }}
+              >
+                <ListItemText
+                  className={styles.comment}
+                  sx={{ bgcolor: "background.paper", maxWidth: 600, padding:2 }}
+                  primary={comment.text}
+                />
+                {open ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              {replies &&
+                replies.map((reply) => (
+                  <Collapse
+                    in={open && reply.parent === comment.id}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List
+                      sx={{ bgcolor: "background.paper", maxWidth: 600 }}
+                      component="div"
+                      disablePadding
+                    >
+                      <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText
+                          className={styles.comment}
+                          primary={reply.text}
+                          sx={{padding:1}}
+                        />
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                ))}
+            </>
           ))}
-        </>
-        ))}
-        </div>
+      </div>
     </>
   );
 }
