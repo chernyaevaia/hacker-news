@@ -5,8 +5,8 @@ import { NewsItemPage } from "./components/NewsItemPage";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<NewsCardList />} />
-      <Route path="/:id" element={<NewsItemPage />} />
+      <Route path="/hacker-news" element={<NewsCardList />} />
+      <Route path="/hacker-news/:id" element={<NewsItemPage />} />
     </Routes>
   );
 }
