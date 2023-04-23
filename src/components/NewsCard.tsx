@@ -6,7 +6,7 @@ export interface NewsCardProps {
   author: string;
   date: string;
   rating: string;
-  kids: number[]
+  descendants: number;
 }
 
 export function NewsCard(news: NewsCardProps) {
@@ -25,7 +25,7 @@ export function NewsCard(news: NewsCardProps) {
         {news.rating} points
       </Typography>
       <Typography className={styles.rating} variant="body2" gutterBottom>
-        {news.kids ? news.kids.length : 0} comments
+        {news.descendants} comments
       </Typography>
     </Card>
   );

@@ -52,7 +52,7 @@ export function NewsCardList() {
                 title={news.title}
                 date={news.time}
                 rating={news.score}
-                kids={news.kids}
+                descendants={news.descendants}
               />
             </Link>
           ))
