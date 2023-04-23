@@ -111,7 +111,7 @@ export function NewsItemPage() {
                     width: 450,
                     padding: 2,
                   }}
-                  primary={comment.text.replace(/<\/?[^>]+>/gi, "")}
+                  primary={comment.text}
                 />
                 <ListItemText
                   className={styles.comment}
